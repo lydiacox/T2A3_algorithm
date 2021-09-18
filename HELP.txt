@@ -1,0 +1,30 @@
+Installing and Running Snowman
+
+System Requirements
+
+UN*X operating system, such as Linux or MacOS
+or
+Windows operating system with Linux Bash Shell
+
+Python 3.x
+Python 3 is required to run this program. If you do not have Python 3, go to https://installpython3.com to download.
+
+
+Installation
+
+Download the files to a directory on your hard drive.
+
+Open terminal shell and navigate to the directory containing this program.
+Enter the following text, followed by Enter/Return:
+chmod +x snowman.sh
+
+
+Running the Program
+
+Open terminal shell and navigate to the directory containing this program.
+
+The enter the following text and press Enter/Return:
+./snowman.sh
+
+To open the ABOUT file, enter the following text and press Enter/Return:
+./snowman.sh about

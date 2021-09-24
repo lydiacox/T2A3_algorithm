@@ -31,8 +31,8 @@ snow_scenes = (
 # second snowman scene, no hat
     """
     
-         *
-           *                      *
+         *              *
+           *        *             *
       *                        *
      
               *     -------          *
@@ -59,8 +59,8 @@ snow_scenes = (
 # third snowman scene, no scarf
     """
     
-         *
-           *                      *
+          *              *
+           *        *             *
       *                        *
      
               *     -------          *
@@ -87,8 +87,8 @@ snow_scenes = (
 # fourth snowman scene, no eyes or nose
     """
     
-         *
-           *                      *
+         *              *
+           *        *             *
       *                        *
      
               *     -------          *
@@ -115,15 +115,15 @@ snow_scenes = (
 # fifth snowman scene, no head
     """
     
-         *
-           *                      *
+         *              *
+           *        *             *
       *                        *
      
-              *                      *
+              *           *          *
                 
          *                    *    *
-                                *
-                  
+                   *            *
+                         *
            *       _________        *
        *          /         \\
                  /           \\   *
@@ -143,15 +143,15 @@ snow_scenes = (
 # sixth snowman scene, no arms
     """
     
-         *
-           *                      *
+         *              *
+           *        *             *
       *                        *
      
-              *                      *
+              *           *          *
                 
          *                    *    *
-                                *
-                  
+                   *            *
+                         *
            *       _________        *
        *          /         \\
                  /           \\   *
@@ -171,21 +171,21 @@ snow_scenes = (
 # seventh snowman scene, no torso
     """
     
-         *
-           *                      *
+         *              *
+           *        *             *
       *                        *
      
-              *                      *
+              *           *          *
                 
          *                    *    *
-                                *
-                  
+                   *            *
+                         *
            *                        *
        *          
-                                 *
-                
-                
-        *                            *
+                     *           *
+                         *
+                *
+        *                      *     *
                  _____________  *
           *     /             \\
       *        /               \\   *
@@ -199,29 +199,29 @@ snow_scenes = (
 # eighth snowman scene, puddle
     """
     
-         *
-           *                      *
+         *              *
+           *        *             *
       *                        *
      
-              *                      *
+              *           *          *
                 
          *                    *    *
-                                *
-                  
+                   *            *
+                         *
            *                        *
        *          
-                                 *
-                
-                
-        *                            *
+                     *           *
+                         *
+                *
+        *                      *     *
                                 *
           * 
-      *                             *
-          
-      
-                                    *
+      *                     *       *
+                   *
+                         *
+                *                   *
           * 
-              
+                              *
        *       ,._~~,.._~..~~,,
     """,
 )

@@ -4,7 +4,7 @@ import sys
 from typing_extensions import TypeVarTuple
 
 server = ""
-port = 5555
+port = 65431
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 

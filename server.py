@@ -1,41 +1,42 @@
 import socket
-from _thread import *
-import sys
-from typing_extensions import TypeVarTuple
 
-server = ""
-port = 65431
+server = socket.gethostname()
+port = 45678
 
+# create a streaming socket socket over IPv4:
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+# bind to listen
 try:
     server_socket.bind((server, port))
 except socket.error as e:
     str(e)
 
-server_socket.listen(2)
-print("Waiting for a connection, Server Started")
+# Listen for connections
+server_socket.listen(1)
 
-def threaded_client(conn):
-    
-    reply = ""
-    while True:
-        try:
-            data = conn.recv(2048)
-            reply = data.decode("utf-8")
 
-            if not data:
-                print("Disconnected")
-                break
-            else:
-                print("Received: ", reply)
-                print("Sending: ", reply)
-            conn.sendall(str.encode(reply))
-        except:
-            break
 
 while True:
-    conn, addr = server_socket.accept()
-    print("Connected to:", addr)
+    # once the client requests, we need to accept it:
+    connection, address = server_socket.accept()
+    print(f"Connection from {address} has been established")
 
-    start_new_thread(threaded_client, (conn,))
+    connection.send("Welcome to Snowman!", "utf-8")
+
+    # receive some data
+    data = connection.recv(1024)
+
+    # if it's blank, break the loop
+    if not data:
+        break
+
+    # otherwise print it to screen
+    print(repr(data).strip("b'"))
+
+    # and then bounce it back to the client in uppercase
+    connection.sendall(data.upper())
+
+    
+
+server_socket.close()

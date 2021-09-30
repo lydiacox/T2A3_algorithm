@@ -1,8 +1,23 @@
-from snowperson import Snow
 import socket
+import classes
 
-class SnowmanServer():
-    '''A server to play the game Snowman
+class Wizard_Server():
+    '''A server to host the Wizard Book Shopping Extravaganza Experience!
+    ...
+    Running through the list of five Wizarding Books, the customer will have an
+    opportunity to specify how many copies of each book they wish to purchase.
+
+    Attributes
+    ----------
+    
+
+    Methods
+    -------
+    server_listen
+    connect_server
+    close_server
+    send_game
+
     '''
     def __init__(self):
 
@@ -34,7 +49,7 @@ class SnowmanServer():
     def send_game(self):
 
         while True:
-            self.connection.send(bytes("Welcome to Snowman!", "utf-8"))
+            self.connection.send(bytes("Shut up and take my money!", "utf-8"))
 
             # receive some data
             data = self.connection.recv(1024)
@@ -52,9 +67,9 @@ class SnowmanServer():
 
     
 
-play_game = SnowmanServer()
+lets_shop = Wizard_Server()
 
-play_game.server_listen()
-play_game.connect_server()
-play_game.send_game()
-play_game.close_server()
+lets_shop.server_listen()
+lets_shop.connect_server()
+lets_shop.send_game()
+lets_shop.close_server()

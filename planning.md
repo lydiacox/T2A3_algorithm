@@ -7,11 +7,11 @@ I will be basing this algorithm on the algorithm written for the workbook assign
 ## Classes
 
 The classes & sub classes will be:
-* Shopping List - a class to ask the buyer how many of each book they wish to purchase
-* Book Sets - a class to organise the list of books into sets so that the appropriate discount can be applied
-* Full Price - a class to calculate the cost of the books with no discount(s) applied
-* Discount - a class to calculate the price of the books with appropriate discount(s) applied
-* Print Price - a class to display for the buyer the total cost of their purchase
+* Shopping_List - A class to ask the customer what they would like to buy
+* Sets_of_Books - A class to determine how many sets of books are being purchased
+* Calc_No_Discount - A class to calculate the cost of all the books at full price.
+* With_Discount - A class to calculate the cost of all the books with any discount(s) applied.
+* Print_Price - A class to print the price of the customer's purchase and any discount applied.
 
 ## Control Flow Diagram
 

@@ -34,7 +34,7 @@ class Wizard_Server():
 
     # Listen for connections
     def server_listen(self):
-        self.server_socket.listen(1)
+        self.server_socket.listen()
 
     # once the client requests, we need to accept it:
     def connect_server(self):
@@ -48,18 +48,19 @@ class Wizard_Server():
     def send_game(self):
 
         while True:
-            self.connection.send(bytes("Shut up and take my money!", "utf-8"))
+            self.connection.send(bytes(Shopping_list().welcome_message, "utf-8"))
 
             # receive some data
-            data = self.connection.recv(1024)
+            data = self.connection.recv(1024).decode("utf-8")
             print(data)
 
             # if it's blank, break the loop
             if not data:
                 break
 
-            # otherwise print it to screen
-            print("some text here")
+            shop_list = Shopping_list()
+
+            shop_list.get_list(self.connection)
 
             # and then bounce it back to the client in uppercase
             self.connection.sendall(data.upper())
@@ -83,42 +84,32 @@ class Shopping_list():
 
     '''
 
+    welcome_message = f"""Welcome to Blourish and Flotts!
+        \nThere are five books in the wizarding series, and the more books in 
+        the series you buy, the bigger your discount!\nEach book costs €8, 
+        but if you buy two different books in the series, you get a 5% 
+        discount. Buy three different books in the series, and get a 10% 
+        discount. Buy 4 different books in the series for a 20% discount, 
+        and for a full 25% discount, buy all five books in the series!"""
+
     def __init__(self):
         self.shopping_list = []
         self.books = ['The Coder\'s Algorithm', 
                       'The Chamber of Stack Overflow',
                       'The Prisoner of Infinite Loops', 'The Goblet of Coffee',
                       'The Order of Control Flow']
-        print(f"""Welcome to Blourish and Flotts!
-        \nThere are five books in the wizarding series, and the more books in 
-        the series you buy, the bigger your discount!\nEach book costs €8, 
-        but if you buy two different books in the series, you get a 5% 
-        discount. Buy three different books in the series, and get a 10% 
-        discount. Buy 4 different books in the series for a 20% discount, 
-        and for a full 25% discount, buy all five books in the series!""")
 
-    def get_list(self):
+    def get_list(self, client_socket):
+
         for book in self.books:
-            try:
-                how_many = False
-                while not how_many:
-                    how_many = input(f"""How many copies of {book} do you want 
-                    to buy?: """)
-                    try:
-                        how_many = int(how_many)
-                        if how_many < 0:
-                            print("Please see the service desk for returns.")
-                            how_many = False
-                        elif how_many == 0:
-                            break
-                        for i in range(how_many):
-                            self.shopping_list.append(book)
-                    except ValueError:
-                        print("Please enter the number of copies of this book you wish to buy.")
-                        how_many = False
-            except KeyboardInterrupt:
-                print("\nThank you for shopping at Blourish and Flotts!")
-                exit()
+            client_socket.send(bytes(f"""How many copies of {book} do you want 
+            to buy?: """, "utf-8"))
+            how_many = client_socket.recv(1024).decode("utf-8")
+            how_many = int(how_many)
+            if how_many == 0:
+                break
+            for i in range(how_many):
+                self.shopping_list.append(book)
 
 
 class Sets_of_Books():

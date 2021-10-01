@@ -1,4 +1,5 @@
 import socket
+import classes
 
 # once the client requests, we need to accept it:
 server = socket.gethostname()
@@ -11,15 +12,18 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((server, port))
 
 # get some string as input
-message_to_send = "Player 1 is here!"
+message_to_send = "The buyer is here!"
 
 # send the message
 client_socket.sendall(bytes(message_to_send, "utf-8"))
 
 # get a response
-received_message = client_socket.recv(1024)
+while True:
+    received_message = client_socket.recv(1024)
 
-# print the decoded message
-print(received_message.decode("utf-8"))
+    # print the decoded message
+    print(received_message.decode("utf-8"))
+
+    break
 
 client_socket.close()

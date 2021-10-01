@@ -26,20 +26,27 @@ class Client():
             break
 
     def buy_books(self):
-        # get a response
-        while True:
-            print("We're in the loop")
-            received_message = self.client_socket.recv(1024).decode("utf-8")
-            print(received_message)
-            message_to_send = input(received_message)
-
-            # send the message
-            self.client_socket.sendall(bytes(message_to_send, "utf-8"))
-
-            break
-
-    def valid_input(self, number):
-        pass
+        for i in range (5):
+            while True:
+                received_message = self.client_socket.recv(1024).decode("utf-8")
+                try:
+                    message_to_send = False
+                    while not message_to_send:
+                        message_to_send = input(received_message)
+                        try:
+                            message_to_send = int(message_to_send)
+                            if message_to_send < 0:
+                                print("Please see the service desk for returns.")
+                                message_to_send = False
+                            elif message_to_send == 0:
+                                break
+                        except ValueError:
+                            print("Please enter the number of copies of this book you wish to buy.")
+                except KeyboardInterrupt:
+                    print("\nThank you for shopping at Blourish and Flotts!")
+                    exit()
+                self.client_socket.sendall(bytes(message_to_send, "utf-8"))
+                break
 
     def close_client(self):
         self.client_socket.close()
@@ -80,29 +87,21 @@ class Wizard_Server():
         self.connection, self.address = self.server_socket.accept()
         print(f"Connection from {self.address} has been established")
 
-
     def close_server(self):
         self.server_socket.close()
 
     def send_game(self):
-
         while True:
             shop_list = Shopping_list()
-
             self.connection.send(bytes(shop_list.welcome_message, "utf-8"))
+            shop_list.get_list(self.connection)
+            # data = self.connection.recv(1024).decode("utf-8")
+            break
+        print(shop_list.shopping_list)
+            # # if it's blank, break the loop
+            # if not data:
+            #     break
 
-            # receive some data
-            while True:
-                shop_list.get_list(self.connection.recv(1024).decode("utf-8"))
-                # data = self.connection.recv(1024).decode("utf-8")
-
-                break
-
-                # if it's blank, break the loop
-                if not data:
-                    break
-
-            
 
 class Shopping_list():
     '''
@@ -133,11 +132,13 @@ class Shopping_list():
                       'The Order of Control Flow']
 
     def get_list(self, client_socket):
-
         for book in self.books:
-            client_socket.send(bytes(f"""How many copies of {book} do you want 
-            to buy?: """, "utf-8"))
-            how_many = client_socket.recv(1024).decode("utf-8")
+            print(type(client_socket))
+            client_socket.send(bytes(f"How many copies of {book} do you want to buy?: \n", "utf-8"))
+            while True:
+                how_many = client_socket.recv(1024).decode("utf-8")
+                print(how_many)
+                break
             how_many = int(how_many)
             if how_many == 0:
                 break

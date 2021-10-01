@@ -1,22 +1,45 @@
 import socket
+import sys
 
 class Client():
     '''A client to purchase books in the Wizarding Series.
     ...
     Methods
     -------
+    buy_books
+    valid_input
     close_client
     '''
-    def __init__(self):
+    def __init__(self, port):
         # once the client requests, we need to accept it:
         self.server = socket.gethostname()
-        self.port = 45678
+        self.port = port
 
         # create socket
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # because we are the client we need to connect to to a listening server
         self.client_socket.connect((self.server, self.port))
+
+        while True:
+            print(self.client_socket.recv(1024).decode("utf-8"))
+            break
+
+    def buy_books(self):
+        # get a response
+        while True:
+            print("We're in the loop")
+            received_message = self.client_socket.recv(1024).decode("utf-8")
+            print(received_message)
+            message_to_send = input(received_message)
+
+            # send the message
+            self.client_socket.sendall(bytes(message_to_send, "utf-8"))
+
+            break
+
+    def valid_input(self, number):
+        pass
 
     def close_client(self):
         self.client_socket.close()
@@ -27,7 +50,7 @@ class Wizard_Server():
     ...
     Running through the list of five Wizarding Books, the customer will have an
     opportunity to specify how many copies of each book they wish to purchase.
-    
+
     Methods
     -------
     server_listen
@@ -35,10 +58,9 @@ class Wizard_Server():
     close_server
     send_game
     '''
-    def __init__(self):
-
+    def __init__(self, port):
+        self.port = port
         self.server = socket.gethostname()
-        self.port = 45678
 
         # create a streaming socket socket over IPv4:
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -65,22 +87,22 @@ class Wizard_Server():
     def send_game(self):
 
         while True:
-            self.connection.send(bytes(Shopping_list().welcome_message, "utf-8"))
-
-            # receive some data
-            data = self.connection.recv(1024).decode("utf-8")
-            print(data)
-
-            # if it's blank, break the loop
-            if not data:
-                break
-
             shop_list = Shopping_list()
 
-            shop_list.get_list(self.connection)
+            self.connection.send(bytes(shop_list.welcome_message, "utf-8"))
 
-            # and then bounce it back to the client in uppercase
-            self.connection.sendall(data.upper())
+            # receive some data
+            while True:
+                shop_list.get_list(self.connection.recv(1024).decode("utf-8"))
+                # data = self.connection.recv(1024).decode("utf-8")
+
+                break
+
+                # if it's blank, break the loop
+                if not data:
+                    break
+
+            
 
 class Shopping_list():
     '''
@@ -101,13 +123,7 @@ class Shopping_list():
 
     '''
 
-    welcome_message = f"""Welcome to Blourish and Flotts!
-        \nThere are five books in the wizarding series, and the more books in 
-        the series you buy, the bigger your discount!\nEach book costs €8, 
-        but if you buy two different books in the series, you get a 5% 
-        discount. Buy three different books in the series, and get a 10% 
-        discount. Buy 4 different books in the series for a 20% discount, 
-        and for a full 25% discount, buy all five books in the series!"""
+    welcome_message = f"""Welcome to Blourish and Flotts!\nThere are five books in the Wizarding Series, and the more books\nin the series you buy, the bigger your discount!\nEach book costs €8, but buy a set of books in the series\nfor a discount!\nTwo books: 5% discount\nThree books: 10% discount\nFour books:  20% discount\nFive books: 25% discount!!!"""
 
     def __init__(self):
         self.shopping_list = []

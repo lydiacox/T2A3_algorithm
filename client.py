@@ -1,19 +1,11 @@
 import classes
+import sys
 
-buy_books = classes.Client()
+if len(sys.argv) > 1:
+    port = sys.argv[1]
+else:
+    port = 45678
 
-# get a response
-while True:
-    received_message = buy_books.client_socket.recv(1024)
-
-    # print the decoded message
-    print(received_message.decode("utf-8"))
-
-    message_to_send = "The buyer is here!"
-
-    # send the message
-    buy_books.client_socket.sendall(bytes(message_to_send, "utf-8"))
-
-    break
-
+buy_books = classes.Client(port)
+buy_books.buy_books()
 buy_books.close_client()

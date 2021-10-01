@@ -1,8 +1,14 @@
 import classes
+import sys
 
-lets_shop = classes.Wizard_Server()
+if len(sys.argv) > 1:
+    port = sys.argv[1]
+else:
+    port = 45678
 
-lets_shop.server_listen()
-lets_shop.connect_server()
-lets_shop.send_game()
-lets_shop.close_server()
+make_bread = classes.Wizard_Server(port)
+
+make_bread.server_listen()
+make_bread.connect_server()
+make_bread.send_game()
+make_bread.close_server()

@@ -1,22 +1,39 @@
 import socket
 
+class Client():
+    '''A client to purchase books in the Wizarding Series.
+    ...
+    Methods
+    -------
+    close_client
+    '''
+    def __init__(self):
+        # once the client requests, we need to accept it:
+        self.server = socket.gethostname()
+        self.port = 45678
+
+        # create socket
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        # because we are the client we need to connect to to a listening server
+        self.client_socket.connect((self.server, self.port))
+
+    def close_client(self):
+        self.client_socket.close()
+
+
 class Wizard_Server():
     '''A server to host the Wizard Book Shopping Extravaganza Experience!
     ...
     Running through the list of five Wizarding Books, the customer will have an
     opportunity to specify how many copies of each book they wish to purchase.
-
-    Attributes
-    ----------
     
-
     Methods
     -------
     server_listen
     connect_server
     close_server
     send_game
-
     '''
     def __init__(self):
 
@@ -153,13 +170,6 @@ class Sets_of_Books():
 class Calc_No_Discount():
     '''
     A class to calculate the cost of all the books at full price.
-    ...
-
-    Attributes
-    ----------
-
-    Methods
-    -------
 
     '''
     def __init__(self, shop_list):

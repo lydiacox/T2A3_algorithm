@@ -1,5 +1,4 @@
 import socket
-import sys
 
 class Client():
     '''A client to purchase books in the Wizarding Series.
@@ -21,33 +20,28 @@ class Client():
         # because we are the client we need to connect to to a listening server
         self.client_socket.connect((self.server, self.port))
 
-        while True:
-            print(self.client_socket.recv(1024).decode("utf-8"))
-            break
-
     def buy_books(self):
         for i in range (5):
-            while True:
-                received_message = self.client_socket.recv(1024).decode("utf-8")
-                try:
-                    no_of_books = False
-                    while not no_of_books:
-                        no_of_books = input(received_message)
-                        try:
-                            no_of_books = int(no_of_books)
-                            if no_of_books < 0:
-                                print("Please see the service desk for returns.")
-                                no_of_books = False
-                            elif no_of_books == 0:
-                                break
-                        except ValueError:
-                            print("Please enter the number of copies of this book you wish to buy.")
-                except KeyboardInterrupt:
-                    print("\nThank you for shopping at Blourish and Flotts!")
-                    exit()
-                message_to_send = str(no_of_books)
-                self.client_socket.sendall(bytes(message_to_send, "utf-8"))
-                break
+            received_message = self.client_socket.recv(1024).decode("utf-8")
+            try:
+                no_of_books = False
+                while not no_of_books:
+                    no_of_books = input(received_message)
+                    try:
+                        no_of_books = int(no_of_books)
+                        if no_of_books < 0:
+                            print("Please see the service desk for returns.")
+                            no_of_books = False
+                        elif no_of_books == 0:
+                            break
+                    except ValueError:
+                        print("Please enter the number of copies of this book you wish to buy.")
+                        no_of_books = False
+            except KeyboardInterrupt:
+                print("\nThank you for shopping at Blourish and Flotts!")
+                exit()
+            message_to_send = str(no_of_books)
+            self.client_socket.sendall(bytes(message_to_send, "utf-8"))  
 
     def close_client(self):
         self.client_socket.close()
@@ -120,9 +114,8 @@ class Shopping_list():
 
     '''
 
-    
-
     def __init__(self):
+        self.shopping_list = []
         self.welcome_message = f"""Welcome to Blourish and Flotts!\nThere are five books in the Wizarding Series, and the more books\nin the series you buy, the bigger your discount!\nEach book costs €8, but buy a set of books in the series\nfor a discount!\nTwo books: 5% discount\nThree books: 10% discount\nFour books:  20% discount\nFive books: 25% discount!!!\n"""
         self.books = ['The Coder\'s Algorithm', 
                       'The Chamber of Stack Overflow',
@@ -130,17 +123,12 @@ class Shopping_list():
                       'The Order of Control Flow']
 
     def get_list(self, client_socket):
-        shopping_list = []
         for book in self.books:
-            print(type(client_socket))
             client_socket.send(bytes(f"How many copies of {book} do you want to buy?: \n", "utf-8"))
-            while True:
-                how_many = client_socket.recv(1024).decode("utf-8")
-                break
+            how_many = client_socket.recv(1024).decode("utf-8")
             how_many = int(float(how_many))
             for i in range(how_many):
-                shopping_list.append(book)
-        return shopping_list
+                self.shopping_list.append(book)
 
     def no_discount(self, shop_list):
         return len(shop_list) * 8

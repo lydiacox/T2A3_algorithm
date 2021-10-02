@@ -175,12 +175,12 @@ class Shopping_list():
         return cost
 
     def print_price(self, full_price, discounted):
-        full_price = full_price
         discounted_price = "{:.2f}".format(discounted)
-        difference = "{:.2f}".format(full_price - discounted)
+        difference = full_price - discounted
+        difference_decimal = "{:.2f}".format(difference)
         message = f"Accio price! Your total is €{discounted_price}."
-        if difference:
-            message += f"\nMerlin's beard! You've saved €{difference}."
+        if difference > 0:
+            message += f"\nMerlin's beard! You've saved €{difference_decimal}."
         else:
             message += "\nBuy more books in the set next time! You could have saved Galleons!"
         return message

@@ -32,8 +32,6 @@ class Client():
                             if no_of_books < 0:
                                 print("Please see the service desk for returns.")
                                 no_of_books = False
-                            # elif no_of_books == 0:
-                            #     break
                         except ValueError:
                             print("Please enter the number of copies of this book you wish to buy.")
                             no_of_books = False

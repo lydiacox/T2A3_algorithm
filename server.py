@@ -9,4 +9,5 @@ else:
 make_bread = classes.Wizard_Server(port)
 make_bread.server_listen()
 make_bread.connect_server()
+make_bread.sell_books()
 make_bread.close_server()

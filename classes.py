@@ -120,16 +120,17 @@ class Shopping_list():
 
     '''
 
-    welcome_message = f"""Welcome to Blourish and Flotts!\nThere are five books in the Wizarding Series, and the more books\nin the series you buy, the bigger your discount!\nEach book costs €8, but buy a set of books in the series\nfor a discount!\nTwo books: 5% discount\nThree books: 10% discount\nFour books:  20% discount\nFive books: 25% discount!!!"""
+    
 
     def __init__(self):
-        self.shopping_list = []
+        self.welcome_message = f"""Welcome to Blourish and Flotts!\nThere are five books in the Wizarding Series, and the more books\nin the series you buy, the bigger your discount!\nEach book costs €8, but buy a set of books in the series\nfor a discount!\nTwo books: 5% discount\nThree books: 10% discount\nFour books:  20% discount\nFive books: 25% discount!!!\n"""
         self.books = ['The Coder\'s Algorithm', 
                       'The Chamber of Stack Overflow',
                       'The Prisoner of Infinite Loops', 'The Goblet of Coffee',
                       'The Order of Control Flow']
 
     def get_list(self, client_socket):
+        shopping_list = []
         for book in self.books:
             print(type(client_socket))
             client_socket.send(bytes(f"How many copies of {book} do you want to buy?: \n", "utf-8"))
@@ -138,7 +139,8 @@ class Shopping_list():
                 break
             how_many = int(float(how_many))
             for i in range(how_many):
-                self.shopping_list.append(book)
+                shopping_list.append(book)
+        return shopping_list
 
     def no_discount(self, shop_list):
         return len(shop_list) * 8
@@ -189,4 +191,4 @@ class Shopping_list():
         return message
 
 
-# "i love you mum to the moon 10000000000000000000000000 times and back(maybe even more)"
+# i love you mum to the moon 10000000000000000000000000 times and back(maybe even more)

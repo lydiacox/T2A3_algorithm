@@ -30,21 +30,22 @@ class Client():
             while True:
                 received_message = self.client_socket.recv(1024).decode("utf-8")
                 try:
-                    message_to_send = False
-                    while not message_to_send:
-                        message_to_send = input(received_message)
+                    no_of_books = False
+                    while not no_of_books:
+                        no_of_books = input(received_message)
                         try:
-                            message_to_send = int(message_to_send)
-                            if message_to_send < 0:
+                            no_of_books = int(no_of_books)
+                            if no_of_books < 0:
                                 print("Please see the service desk for returns.")
-                                message_to_send = False
-                            elif message_to_send == 0:
+                                no_of_books = False
+                            elif no_of_books == 0:
                                 break
                         except ValueError:
                             print("Please enter the number of copies of this book you wish to buy.")
                 except KeyboardInterrupt:
                     print("\nThank you for shopping at Blourish and Flotts!")
                     exit()
+                message_to_send = str(no_of_books)
                 self.client_socket.sendall(bytes(message_to_send, "utf-8"))
                 break
 
@@ -63,7 +64,7 @@ class Wizard_Server():
     server_listen
     connect_server
     close_server
-    send_game
+    sell_books
     '''
     def __init__(self, port):
         self.port = port
@@ -90,7 +91,7 @@ class Wizard_Server():
     def close_server(self):
         self.server_socket.close()
 
-    def send_game(self):
+    def sell_books(self):
         while True:
             shop_list = Shopping_list()
             self.connection.send(bytes(shop_list.welcome_message, "utf-8"))
@@ -139,9 +140,7 @@ class Shopping_list():
                 how_many = client_socket.recv(1024).decode("utf-8")
                 print(how_many)
                 break
-            how_many = int(how_many)
-            if how_many == 0:
-                break
+            how_many = int(float(how_many))
             for i in range(how_many):
                 self.shopping_list.append(book)
 

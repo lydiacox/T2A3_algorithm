@@ -93,15 +93,12 @@ class Wizard_Server():
 
     def sell_books(self):
         while True:
-            shop_list = Shopping_list()
-            self.connection.send(bytes(shop_list.welcome_message, "utf-8"))
-            shop_list.get_list(self.connection)
+            shop = Shopping_list()
+            self.connection.send(bytes(shop.welcome_message, "utf-8"))
+            shop.get_list(self.connection)
+            print(shop)
             # data = self.connection.recv(1024).decode("utf-8")
             break
-        print(shop_list.shopping_list)
-            # # if it's blank, break the loop
-            # if not data:
-            #     break
 
 
 class Shopping_list():
@@ -138,117 +135,58 @@ class Shopping_list():
             client_socket.send(bytes(f"How many copies of {book} do you want to buy?: \n", "utf-8"))
             while True:
                 how_many = client_socket.recv(1024).decode("utf-8")
-                print(how_many)
                 break
             how_many = int(float(how_many))
             for i in range(how_many):
                 self.shopping_list.append(book)
 
+    def no_discount(self, shop_list):
+        return len(shop_list) * 8
 
-class Sets_of_Books():
-    '''A class to determine how many sets of books are being purchased
-    ...
-
-    Attributes
-    ----------
-    shop_list : list
-        A list of books the customer wishes to purchase
-
-    Methods
-    -------
-    convert : A function to convert the list of all books to be purchased
-              into a list of sets of books to be purchased.
-    '''
-
-    def __init__(self, shop_list):
-
+    def sets_of_books(shop_list):
         # An empty list, to be filled with more lists of the sets of books
-        self.all_groups = []
-        self.shop_list = shop_list
-
-    # A loop to run while there are still books on the shopping list
-    def convert(self):
-        while self.shop_list:
+        all_groups = []
+        while shop_list:
             # Convert the shopping list to a set, so that it contains only
             # unique values
-            shop_set = set(self.shop_list)
+            shop_set = set(shop_list)
         # A temporary list, to be reset every time the loop runs
         this_group = []
         for book in shop_set:
             this_group.append(book)
-            self.shop_list.remove(book)
+            shop_list.remove(book)
         # Once the loop has iterated through every book in the set, add
         # the temporary list to the all_groups list
         else:
-            self.all_groups.append(this_group)
+            all_groups.append(this_group)
+        return all_groups
 
-
-class Calc_No_Discount():
-    '''
-    A class to calculate the cost of all the books at full price.
-
-    '''
-    def __init__(self, shop_list):
-        self.cost = len(shop_list) * 8
-
-
-class With_Discount():
-    '''
-    A class to calculate the cost of all the books with any discount(s)
-    applied.
-    ...
-
-    Attributes
-    ----------
-    costs_per_set : dict
-        A dictionary with the cost of a set of books, as values, and the number
-        of books in the set as keys.
-
-    '''
-    costs_per_set = {
-        1: 8,
-        2: 15.2,
-        3: 21.6,
-        4: 25.6,
-        5: 30
-    }
-
-    def __init__(self, sets_of_books):
-        self.cost = 0
+    def discounted_price(all_groups):
+        costs_per_set = {
+            1: 8,
+            2: 15.2,
+            3: 21.6,
+            4: 25.6,
+            5: 30
+        }
+        cost = 0
         # A loop to iterate through the list of sets of books
-        for s in sets_of_books:
+        for s in all_groups:
             # The length of the set corresponds with the key in the dictionary.
             # The value is the cost of the set, and is added to the total cost.
-            self.cost += self.costs_per_set[len(s)]
+            cost += costs_per_set[len(s)]
+        return cost
 
-
-class Print_Price():
-    '''
-    A class to print the price of the customer's purchase and any
-    discount applied.
-    ...
-
-    Attributes
-    ----------
-    full_price : float
-        The cost of all the books if they were charged at €8 each.
-    discounted : float
-        The cost of all the books with the discount(s) applied.
-
-    Methods
-    -------
-    print_price : A function to print a statement showing the
-    total cost and any savings, if applicable.
-
-    '''
-    def __init__(self, full_price, discounted):
-        self.full_price = full_price
-        self.discounted = "{:.2f}".format(discounted)
-        self.difference = "{:.2f}".format(full_price - discounted)
-
-    def print_price(self):
-        print(f"Accio price! Your total is €{self.discounted}.")
-        if self.difference:
-            print(f"Merlin's beard! You've saved €{self.difference}.")
+    def print_price(self, full_price, discounted):
+        full_price = full_price
+        discounted = "{:.2f}".format(discounted)
+        difference = "{:.2f}".format(full_price - discounted)
+        message = f"Accio price! Your total is €{discounted}."
+        if difference:
+            message += f"\nMerlin's beard! You've saved €{difference}."
         else:
-            print("Buy more books in the set next time! You could have saved Galleons!")
+            message += "\nBuy more books in the set next time! You could have saved Galleons!"
+        return message
+
+
+# "i love you mum to the moon 10000000000000000000000000 times and back(maybe even more)"

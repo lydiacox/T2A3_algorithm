@@ -6,7 +6,6 @@ class Client():
     Methods
     -------
     buy_books
-    valid_input
     close_client
     '''
     def __init__(self, port):
@@ -21,27 +20,30 @@ class Client():
         self.client_socket.connect((self.server, self.port))
 
     def buy_books(self):
-        for i in range (5):
+        for i in range (6):
             received_message = self.client_socket.recv(1024).decode("utf-8")
-            try:
-                no_of_books = False
-                while not no_of_books:
-                    no_of_books = input(received_message)
-                    try:
-                        no_of_books = int(no_of_books)
-                        if no_of_books < 0:
-                            print("Please see the service desk for returns.")
+            if "How " in received_message:
+                try:
+                    no_of_books = False
+                    while not no_of_books:
+                        no_of_books = input(received_message)
+                        try:
+                            no_of_books = int(no_of_books)
+                            if no_of_books < 0:
+                                print("Please see the service desk for returns.")
+                                no_of_books = False
+                            elif no_of_books == 0:
+                                break
+                        except ValueError:
+                            print("Please enter the number of copies of this book you wish to buy.")
                             no_of_books = False
-                        elif no_of_books == 0:
-                            break
-                    except ValueError:
-                        print("Please enter the number of copies of this book you wish to buy.")
-                        no_of_books = False
-            except KeyboardInterrupt:
-                print("\nThank you for shopping at Blourish and Flotts!")
-                exit()
-            message_to_send = str(no_of_books)
-            self.client_socket.sendall(bytes(message_to_send, "utf-8"))  
+                except KeyboardInterrupt:
+                    print("\nThank you for shopping at Blourish and Flotts!")
+                    exit()
+                message_to_send = str(no_of_books)
+                self.client_socket.sendall(bytes(message_to_send, "utf-8"))
+            else:
+                print(received_message)  
 
     def close_client(self):
         self.client_socket.close()
@@ -90,8 +92,16 @@ class Wizard_Server():
             shop = Shopping_list()
             self.connection.send(bytes(shop.welcome_message, "utf-8"))
             shop.get_list(self.connection)
-            print(shop)
-            # data = self.connection.recv(1024).decode("utf-8")
+            shop_list = shop.shopping_list
+            full_price = shop.no_discount(shop_list)
+            print(full_price)
+            sets = shop.sets_of_books(shop_list)
+            print(sets)
+            discounted = shop.discounted_price(sets)
+            print(discounted)
+            price = shop.print_price(full_price, discounted)
+            print(price)
+            self.connection.send(bytes(price, "utf-8"))
             break
 
 
@@ -133,25 +143,25 @@ class Shopping_list():
     def no_discount(self, shop_list):
         return len(shop_list) * 8
 
-    def sets_of_books(shop_list):
+    def sets_of_books(self, shop_list):
         # An empty list, to be filled with more lists of the sets of books
         all_groups = []
         while shop_list:
             # Convert the shopping list to a set, so that it contains only
             # unique values
             shop_set = set(shop_list)
-        # A temporary list, to be reset every time the loop runs
-        this_group = []
-        for book in shop_set:
-            this_group.append(book)
-            shop_list.remove(book)
-        # Once the loop has iterated through every book in the set, add
-        # the temporary list to the all_groups list
-        else:
-            all_groups.append(this_group)
+            # A temporary list, to be reset every time the loop runs
+            this_group = []
+            for book in shop_set:
+                this_group.append(book)
+                shop_list.remove(book)
+            # Once the loop has iterated through every book in the set, add
+            # the temporary list to the all_groups list
+            else:
+                all_groups.append(this_group)
         return all_groups
 
-    def discounted_price(all_groups):
+    def discounted_price(self, all_groups):
         costs_per_set = {
             1: 8,
             2: 15.2,
@@ -169,9 +179,9 @@ class Shopping_list():
 
     def print_price(self, full_price, discounted):
         full_price = full_price
-        discounted = "{:.2f}".format(discounted)
+        discounted_price = "{:.2f}".format(discounted)
         difference = "{:.2f}".format(full_price - discounted)
-        message = f"Accio price! Your total is €{discounted}."
+        message = f"Accio price! Your total is €{discounted_price}."
         if difference:
             message += f"\nMerlin's beard! You've saved €{difference}."
         else:

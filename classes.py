@@ -25,15 +25,15 @@ class Client():
             if "How " in received_message:
                 try:
                     no_of_books = False
-                    while not no_of_books:
+                    while no_of_books is False:
                         no_of_books = input(received_message)
                         try:
                             no_of_books = int(no_of_books)
                             if no_of_books < 0:
                                 print("Please see the service desk for returns.")
                                 no_of_books = False
-                            elif no_of_books == 0:
-                                break
+                            # elif no_of_books == 0:
+                            #     break
                         except ValueError:
                             print("Please enter the number of copies of this book you wish to buy.")
                             no_of_books = False
@@ -96,9 +96,10 @@ class Wizard_Server():
             full_price = shop.no_discount(shop_list)
             sets = shop.sets_of_books(shop_list)
             discounted = shop.discounted_price(sets)
+            discounted_decimal = "{:.2f}".format(discounted)
             price = shop.print_price(full_price, discounted)
             self.connection.send(bytes(price, "utf-8"))
-            print(f"The customer wishes to buy {sets}. Total price is €{discounted}.")
+            print(f"The customer wishes to buy {sets}. Total price is €{discounted_decimal}.")
             break
 
 
@@ -116,9 +117,19 @@ class Shopping_list():
 
     Methods
     -------
-    get_list : A function to iterate through the list of books available
-               for purchase and get inputs from the customer.
-
+    get_list :
+        A function to iterate through the list of books available for purchase
+        and get inputs from the customer.'
+    no_discount :
+        A function to calculate the total cost of the books with no discounts
+        applied.
+    sets_of_books :
+        A function to break up the list of books into sets of books.
+    discounted_price :
+        A function to calculate the cost of the books with any discount(s)
+        applied.
+    print_price :
+        A function to display the cost of the books and any discount received.
     '''
 
     def __init__(self):
@@ -179,11 +190,8 @@ class Shopping_list():
         difference = full_price - discounted
         difference_decimal = "{:.2f}".format(difference)
         message = f"Accio price! Your total is €{discounted_price}."
-        if difference > 0:
+        if difference:
             message += f"\nMerlin's beard! You've saved €{difference_decimal}."
         else:
             message += "\nBuy more books in the set next time! You could have saved Galleons!"
         return message
-
-
-# i love you mum to the moon 10000000000000000000000000 times and back(maybe even more)

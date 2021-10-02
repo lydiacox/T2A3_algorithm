@@ -94,14 +94,11 @@ class Wizard_Server():
             shop.get_list(self.connection)
             shop_list = shop.shopping_list
             full_price = shop.no_discount(shop_list)
-            print(full_price)
             sets = shop.sets_of_books(shop_list)
-            print(sets)
             discounted = shop.discounted_price(sets)
-            print(discounted)
             price = shop.print_price(full_price, discounted)
-            print(price)
             self.connection.send(bytes(price, "utf-8"))
+            print(f"The customer wishes to buy {sets}. Total price is €{discounted}.")
             break
 
 

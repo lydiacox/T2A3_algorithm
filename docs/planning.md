@@ -76,3 +76,31 @@ A method to display the cost of the books, any discounts applied, and a few Harr
 [^1]: “Socket — Low-Level Networking Interface — Python 3.9.7 Documentation.” Python, 2 Oct. 2021, docs.python.org/3/library/socket.html.
 
 [^2]: “Sys — System-Specific Parameters and Functions — Python 3.9.7 Documentation.” Python, 2 Oct. 2021, docs.python.org/3/library/sys.html.
+
+<!-- 
+Original assignment:
+
+Once upon a time there was a series of 5 books about a young wizard. Children all over the world think they are fantastic!
+
+To increase sales, the publisher created a pricing model to take advantage of the wizard's extreme popularity.
+
+The pricing model has the following rules:
+
+* a single copy of any of the five books costs 8 EUR
+* a 5% discount is applied if two different books from the series are purchased
+* a 10% discount is applied if three different books from the series are purchased
+* a 20% discount is applied if four different books from the series are purchased
+* a 25% discount is applied if all five books from the series are purchased
+* if the customer purchases two copies of one book, the second copy will cost 8 EUR and will not have any discount applied unless there are more duplicated of another book that could have a discount applied as part of a second set of books.
+
+Wizard Fever is sweeping the country and parents of children everywhere are queuing up with shopping baskets overflowing with the wizard books.
+
+A simple case of this would be:
+
+customerShoppingCart([book1, book2, book3]) => $21.60
+
+A more complex case using the pricing model is:
+
+customerShoppingCart([book1, book2, book3, book4, book5, book1, book3, book5]) => $51.60
+
+**Develop an algorithm to calculate the total price of any possible combination of purchases which provides a discount according to the pricing model above. -->

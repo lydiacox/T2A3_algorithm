@@ -71,14 +71,7 @@ A method to display the cost of the books, any discounts applied, and a few Harr
 
 ![Control Flow Diagram](control_flow.png)
 
-## References
-
-[^1]: “Socket — Low-Level Networking Interface — Python 3.9.7 Documentation.” Python, 2 Oct. 2021, docs.python.org/3/library/socket.html.
-
-[^2]: “Sys — System-Specific Parameters and Functions — Python 3.9.7 Documentation.” Python, 2 Oct. 2021, docs.python.org/3/library/sys.html.
-
-<!-- 
-Original workbook assignment:
+## Original workbook assignment
 
 Once upon a time there was a series of 5 books about a young wizard. Children all over the world think they are fantastic!
 
@@ -103,4 +96,9 @@ A more complex case using the pricing model is:
 
 customerShoppingCart([book1, book2, book3, book4, book5, book1, book3, book5]) => $51.60
 
-**Develop an algorithm to calculate the total price of any possible combination of purchases which provides a discount according to the pricing model above. -->
+**Develop an algorithm to calculate the total price of any possible combination of purchases which provides a discount according to the pricing model above.
+
+## References
+
+[^1]: “Socket — Low-Level Networking Interface — Python 3.9.7 Documentation.” Python, 2 Oct. 2021, docs.python.org/3/library/socket.html.
+[^2]: “Sys — System-Specific Parameters and Functions — Python 3.9.7 Documentation.” Python, 2 Oct. 2021, docs.python.org/3/library/sys.html.

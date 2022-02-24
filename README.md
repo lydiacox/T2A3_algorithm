@@ -78,7 +78,7 @@ A method to display the cost of the books, any discounts applied, and a few Harr
 [^2]: “Sys — System-Specific Parameters and Functions — Python 3.9.7 Documentation.” Python, 2 Oct. 2021, docs.python.org/3/library/sys.html.
 
 <!-- 
-Original assignment:
+Original workbook assignment:
 
 Once upon a time there was a series of 5 books about a young wizard. Children all over the world think they are fantastic!
 

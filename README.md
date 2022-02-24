@@ -69,7 +69,7 @@ A method to display the cost of the books, any discounts applied, and a few Harr
 
 ## Control Flow Diagram
 
-![Control Flow Diagram](control_flow.png)
+![Control Flow Diagram](docs/control_flow.png)
 
 ## Original workbook assignment
 

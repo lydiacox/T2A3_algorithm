@@ -143,7 +143,6 @@ class Wizard_Server():
             print(f"The customer wishes to buy {sets}. Total price is €{discounted_decimal}.")
             break
 
-
 class Shopping_list():
     '''
     A class to ask the customer what they would like to buy.
